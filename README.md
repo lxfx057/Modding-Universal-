@@ -42,7 +42,7 @@ modding-hub/
 │ └── device.html # Pagina dinamica del modello selezionato
 ├── README.md # Questo file
 └── LICENSE # Licenza Open Source (MIT)
-    ````
+````
 
 ## 🚀 Come iniziare
 
