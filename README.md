@@ -18,7 +18,7 @@ Il progetto nasce per risolvere un problema comune a chi fa modding: i link uffi
 - Struttura facilmente estendibile per aggiungere nuovi brand o dispositivi
 
 ## 📂 Struttura del progetto
-text````
+````
 modding-hub/
 ├── .github/
 │ └── workflows/
