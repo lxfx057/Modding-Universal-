@@ -4,7 +4,15 @@ const path=require("node:path");
 const fs=require("node:fs");
 const pendingDownloads=new Map();
 function run(bin,args){return new Promise(resolve=>execFile(bin,args,{timeout:12000,windowsHide:true},(error,stdout,stderr)=>resolve({ok:!error,stdout:stdout||"",stderr:stderr||"",error:error?.message||null})))}
-async function readAdbProfile(id){const props=["ro.product.model","ro.product.manufacturer","ro.product.device","ro.product.vendor.device","ro.build.product"];const results=await Promise.all(props.map(p=>run("adb",["-s",id,"shell","getprop",p])));const v=results.map(x=>x.stdout.trim());return{model:v[0],manufacturer:v[1],codename:v[2]||v[3]||v[4],vendorDevice:v[3],buildProduct:v[4]}}
+async function readAdbProfile(id){
+  const props=["ro.product.model","ro.product.manufacturer","ro.product.device","ro.product.vendor.device","ro.build.product","ro.product.odm.device","ro.product.system.device","ro.build.fingerprint","ro.boot.hardware.sku"];
+  const results=await Promise.all(props.map(p=>run("adb",["-s",id,"shell","getprop",p])));
+  const v=results.map(x=>x.stdout.trim());
+  const candidates=[v[2],v[3],v[4],v[5],v[6]].filter(Boolean);
+  const unique=[...new Set(candidates)];
+  const conflict=unique.length>1;
+  return{model:v[0],manufacturer:v[1],codename:conflict?"":(v[2]||v[3]||v[4]||v[5]||v[6]),vendorDevice:v[3],buildProduct:v[4],odmDevice:v[5],systemDevice:v[6],fingerprint:v[7],hardwareSku:v[8],codenameCandidates:unique,identityVerified:!!(v[0]&&v[1]&&unique.length===1),identityWarning:conflict?"Le proprietà Android riportano codename differenti: identificazione sospesa.":(!v[0]||!v[1]||!unique.length?"Dati identificativi incompleti.":"")};
+}
 async function detect(){const [a,f]=await Promise.all([run("adb",["devices","-l"]),run("fastboot",["devices"])]);const devices=[];for(const line of a.stdout.split(/\r?\n/).slice(1)){const m=line.trim().match(/^(\S+)\s+(\S+)/);if(m){let d={kind:"ADB",id:m[1],state:m[2]};if(m[2]==="device")Object.assign(d,await readAdbProfile(m[1]));devices.push(d)}}for(const line of f.stdout.split(/\r?\n/)){const m=line.trim().match(/^(\S+)\s+(\S+)/);if(m)devices.push({kind:"Fastboot",id:m[1],state:m[2]})}return{devices,adbAvailable:a.ok,fastbootAvailable:f.ok,adbError:a.error,fastbootError:f.error}}
 async function getLineageData(codename){
   if(typeof codename!=="string"||!/^[a-z0-9_-]{2,40}$/.test(codename))throw Error("Codename non valido");
