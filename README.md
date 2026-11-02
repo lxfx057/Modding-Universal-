@@ -2,7 +2,7 @@
 
 Catalogo open source di strumenti, firmware, recovery, driver e guide per dispositivi Android. Progetto indipendente e non affiliato ai produttori.
 
-## MVP v0.3.0
+## MVP v0.4.0
 - Interfaccia web responsive dark.
 - Catalogo iniziale di fonti ufficiali e community.
 - Ricerca e filtri per categoria e brand.
@@ -10,6 +10,8 @@ Catalogo open source di strumenti, firmware, recovery, driver e guide per dispos
 - App desktop Electron per Windows, macOS e Linux.
 - Rilevamento ADB dei dispositivi Android con lettura di modello, produttore e codename.
 - Ricerca del supporto LineageOS verificando il codename nel wiki ufficiale.
+- Verifica multi-ROM conservativa sugli otto cataloghi ufficiali aggiuntivi: richiede identità ADB coerente e corrispondenza del modello; se il catalogo non è accessibile o la corrispondenza è parziale, UMC non propone file.
+- Controllo dinamico delle release KSign tramite GitHub API ufficiale; download e firma IPA restano sul dispositivo iOS e nel repository originale.
 - Elenco delle build ZIP pubblicate dall'API ufficiale LineageOS v2.
 - Download desktop dei pacchetti LineageOS nella cartella Download/UMC.
 - Generazione di una guida TXT per la build selezionata.
@@ -51,7 +53,7 @@ Fonti dati:
 - Project Sandcastle dichiara supporto Android attuale per iPhone 7 / 7 Plus e iPod touch 7, non per iPhone 12 e successivi: https://projectsandcastle.org/status
 
 ## Limiti e sicurezza
-- Il catalogo informativo mostra nove progetti ROM, ma la ricerca automatica delle build ZIP per codename copre **LineageOS ufficiale** soltanto. Per gli altri otto progetti UMC apre le rispettive fonti ufficiali: la presenza nel catalogo non implica supporto per il dispositivo collegato.
+- La verifica multi-ROM consulta i cataloghi ufficiali di crDroid, GrapheneOS, CalyxOS, /e/OS, Evolution X, PixelOS, DerpFest e BlissROMs. Una corrispondenza viene considerata verificata solo quando la fonte contiene sia il codename esatto sia il nome modello; le fonti che non espongono dati accessibili via browser vengono indicate come non verificabili. I file vengono collegati solo se trovati nella pagina ufficiale e sul dominio ufficiale del progetto. La disponibilità può variare e non equivale a certificazione d'installazione.
 - La presenza nel wiki non significa che ogni variante commerciale sia compatibile: controlla sempre modello, codename, variante e requisiti firmware.
 - Se il dispositivo non è supportato o l'API non restituisce build, UMC non propone ZIP alternativi né inventa link.
 - Il TXT è una guida di orientamento con link alla documentazione ufficiale; non sostituisce le istruzioni aggiornate specifiche del dispositivo.
@@ -69,7 +71,7 @@ Fonti dati:
 - [x] iPhone Lab con compatibilità jailbreak preliminare e strumenti sideloading
 - [x] Download ZIP desktop e guida TXT
 - [ ] Download manager con progressi visibili, checksum automatico e ripresa
-- [ ] Catalogo multi-ROM con fonti ufficiali per ogni progetto
+- [x] Verifica multi-ROM prudenziale sui cataloghi ufficiali (match modello + codename, senza fallback presunti)
 - [ ] Database dispositivi per più produttori e varianti
 - [ ] Test automatici e build desktop firmate
 
