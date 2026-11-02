@@ -2,17 +2,23 @@
 
 Catalogo open source di strumenti, firmware, recovery, driver e guide per dispositivi Android. Progetto indipendente e non affiliato ai produttori.
 
-## MVP v0.1.0
+## MVP v0.2.0 (in sviluppo — PR #2)
+
+La verifica automatica della sintassi è eseguita da GitHub Actions prima dell'integrazione in `main`.
 - Interfaccia web responsive dark.
 - Catalogo iniziale di fonti ufficiali e community.
 - Ricerca e filtri per categoria e brand.
-- Coda di selezione e apertura delle fonti originali.
 - Ricerca repository pubblici tramite GitHub API.
-- Shell desktop Electron per Windows, macOS e Linux.
-- Rilevamento dispositivi ADB/Fastboot nell'app desktop (richiede Platform Tools installati).
+- App desktop Electron per Windows, macOS e Linux.
+- Rilevamento ADB dei dispositivi Android con lettura di modello, produttore e codename.
+- Ricerca del supporto LineageOS verificando il codename nel wiki ufficiale.
+- Elenco delle build ZIP pubblicate dall'API ufficiale LineageOS v2.
+- Download desktop dei pacchetti LineageOS nella cartella Download/UMC.
+- Generazione di una guida TXT per la build selezionata.
+- In modalità web, download delegato al browser e guida TXT generata localmente.
 
 ## Avvio web
-Apri `site/index.html` oppure esegui `npx serve site`.
+Apri `site/index.html` oppure esegui `npm run web`.
 
 ## Avvio desktop
 Richiede Node.js LTS:
@@ -24,20 +30,38 @@ Per creare pacchetti: `npm run dist` (la compilazione per ogni OS è preferibile
 
 Installa ADB/Fastboot dal sito ufficiale: https://developer.android.com/tools/releases/platform-tools
 
-## Download e sicurezza
-La web app apre i link alle fonti originali; non ospita copie di firmware e non aggira login o protezioni. La coda MVP non è ancora un download manager integrato. Prima di flashare, verifica modello esatto, codename, variante e regione; controlla checksum quando disponibili ed esegui un backup. Lo sblocco bootloader può cancellare i dati.
+## Flusso Custom ROM
+1. Collega il telefono via USB, abilita Debug USB e autorizza il PC.
+2. Nell'app desktop apri **Dispositivi** e premi **Rileva via ADB / Fastboot**. UMC legge modello, produttore e codename tramite proprietà Android non identificative.
+3. Apri **Custom ROM**. UMC verifica il codename nel repository dati ufficiale del wiki LineageOS.
+4. Se il dispositivo è presente, UMC consulta l'API pubblica v2 di LineageOS e mostra gli ZIP effettivamente pubblicati per quel codename.
+5. Scarica lo ZIP e genera il TXT della build selezionata. Nell'app desktop i download sono salvati in `Download/UMC`; nel browser il download è gestito dal browser.
 
-UMC non distribuisce Odin e non automatizza il flash. Odin è proprietario: usa solo fonti affidabili e procedure specifiche per il modello. Nessuna compatibilità universale è garantita.
+Fonti dati:
+- https://github.com/LineageOS/lineage_wiki
+- https://download.lineageos.org/api/v2/devices/<codename>/builds
+- https://wiki.lineageos.org/devices/<codename>/install/
+
+## Limiti e sicurezza
+- In questa versione il catalogo ROM automatico copre **LineageOS ufficiale**. Non afferma di elencare tutte le custom ROM esistenti né le build non ufficiali.
+- La presenza nel wiki non significa che ogni variante commerciale sia compatibile: controlla sempre modello, codename, variante e requisiti firmware.
+- Se il dispositivo non è supportato o l'API non restituisce build, UMC non propone ZIP alternativi né inventa link.
+- Il TXT è una guida di orientamento con link alla documentazione ufficiale; non sostituisce le istruzioni aggiornate specifiche del dispositivo.
+- Il download desktop accetta solo URL HTTPS appartenenti a domini `.lineageos.org`.
+- UMC non sblocca il bootloader, non esegue il flash e non automatizza Odin. Lo sblocco può cancellare i dati: esegui un backup.
+- Controlla SHA-256 e firma quando disponibili prima di installare.
 
 ## Roadmap
 - [x] Catalogo, ricerca e filtri
 - [x] Ricerca GitHub
-- [x] Selezione multipla
 - [x] Shell desktop e rilevamento ADB/Fastboot
-- [ ] Download manager con progressi, checksum e ripresa
-- [ ] Database dispositivi per codename/variante
-- [ ] Controllo automatico dei link
-- [ ] Guide guidate e controlli di compatibilità
+- [x] Rilevamento modello e codename
+- [x] Verifica LineageOS e ricerca build ufficiali
+- [x] Download ZIP desktop e guida TXT
+- [ ] Download manager con progressi visibili, checksum automatico e ripresa
+- [ ] Catalogo multi-ROM con fonti ufficiali per ogni progetto
+- [ ] Database dispositivi per più produttori e varianti
+- [ ] Test automatici e build desktop firmate
 
 ## Licenza
 MIT. Software e marchi di terze parti restano dei rispettivi proprietari.
