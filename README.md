@@ -2,7 +2,7 @@
 
 Catalogo open source di strumenti, firmware, recovery, driver e guide per dispositivi Android. Progetto indipendente e non affiliato ai produttori.
 
-## MVP v0.2.0
+## MVP v0.3.0
 - Interfaccia web responsive dark.
 - Catalogo iniziale di fonti ufficiali e community.
 - Ricerca e filtri per categoria e brand.
@@ -13,6 +13,10 @@ Catalogo open source di strumenti, firmware, recovery, driver e guide per dispos
 - Elenco delle build ZIP pubblicate dall'API ufficiale LineageOS v2.
 - Download desktop dei pacchetti LineageOS nella cartella Download/UMC.
 - Generazione di una guida TXT per la build selezionata.
+- Catalogo informativo di nove progetti ROM: LineageOS, crDroid, GrapheneOS, CalyxOS, /e/OS, Evolution X, PixelOS, DerpFest e BlissROMs.
+- Sezione iPhone 12 e successivi con controllo preliminare della compatibilità jailbreak per modello/versione iOS.
+- Collegamenti ufficiali per AltStore PAL/Classic, SideStore, KSign, Sideloadly e Dopamine.
+- Nota di compatibilità Android su iPhone basata sullo stato ufficiale di Project Sandcastle.
 - In modalità web, download delegato al browser e guida TXT generata localmente.
 
 ## Avvio web
@@ -40,8 +44,14 @@ Fonti dati:
 - https://download.lineageos.org/api/v2/devices/<codename>/builds
 - https://wiki.lineageos.org/devices/<codename>/install/
 
+## iPhone Lab
+- Il controllo jailbreak è indicativo e rimanda alla iOS Guide per verificare il firmware esatto. Non esegue jailbreak, firma IPA o installazioni.
+- AltStore PAL è il marketplace alternativo per l'UE; AltStore Classic, SideStore e KSign sono strumenti di sideloading/firma e non equivalgono a un jailbreak.
+- KSign deve essere scaricato solo dalle release del repository ufficiale: https://github.com/Nyasami/Ksign/releases
+- Project Sandcastle dichiara supporto Android attuale per iPhone 7 / 7 Plus e iPod touch 7, non per iPhone 12 e successivi: https://projectsandcastle.org/status
+
 ## Limiti e sicurezza
-- In questa versione il catalogo ROM automatico copre **LineageOS ufficiale**. Non afferma di elencare tutte le custom ROM esistenti né le build non ufficiali.
+- Il catalogo informativo mostra nove progetti ROM, ma la ricerca automatica delle build ZIP per codename copre **LineageOS ufficiale** soltanto. Per gli altri otto progetti UMC apre le rispettive fonti ufficiali: la presenza nel catalogo non implica supporto per il dispositivo collegato.
 - La presenza nel wiki non significa che ogni variante commerciale sia compatibile: controlla sempre modello, codename, variante e requisiti firmware.
 - Se il dispositivo non è supportato o l'API non restituisce build, UMC non propone ZIP alternativi né inventa link.
 - Il TXT è una guida di orientamento con link alla documentazione ufficiale; non sostituisce le istruzioni aggiornate specifiche del dispositivo.
@@ -55,6 +65,8 @@ Fonti dati:
 - [x] Shell desktop e rilevamento ADB/Fastboot
 - [x] Rilevamento modello e codename
 - [x] Verifica LineageOS e ricerca build ufficiali
+- [x] Catalogo di nove progetti ROM
+- [x] iPhone Lab con compatibilità jailbreak preliminare e strumenti sideloading
 - [x] Download ZIP desktop e guida TXT
 - [ ] Download manager con progressi visibili, checksum automatico e ripresa
 - [ ] Catalogo multi-ROM con fonti ufficiali per ogni progetto
