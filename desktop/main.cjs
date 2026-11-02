@@ -10,9 +10,9 @@ function safeFilename(name){return String(name||"lineageos.zip").replace(/[^a-zA
 function createWindow(){const w=new BrowserWindow({width:1440,height:950,minWidth:900,minHeight:650,backgroundColor:"#090d16",webPreferences:{preload:path.join(__dirname,"preload.cjs"),contextIsolation:true,nodeIntegration:false,sandbox:true}});w.loadFile(path.join(__dirname,"../site/index.html"))}
 app.whenReady().then(()=>{
   session.defaultSession.on("will-download",(_event,item,webContents)=>{
-    const url=item.getURL(),pending=pendingDownloads.get(url);
+    const pending=pendingDownloads.get(webContents.id);
     if(!pending||!pending.length)return;
-    const job=pending.shift();if(!pending.length)pendingDownloads.delete(url);
+    const job=pending.shift();if(!pending.length)pendingDownloads.delete(webContents.id);
     const {target,win}=job;item.setSavePath(target);
     item.on("updated",()=>{if(!win.isDestroyed())win.webContents.send("umc:download-progress",{filename:path.basename(target),received:item.getReceivedBytes(),total:item.getTotalBytes(),state:item.getState()})});
     item.once("done",(_event,state)=>{if(!win.isDestroyed())win.webContents.send("umc:download-done",{filename:path.basename(target),state,path:state==="completed"?target:null})});
@@ -24,8 +24,8 @@ app.whenReady().then(()=>{
     if(parsed.protocol!=="https:"||!(parsed.hostname==="download.lineageos.org"||parsed.hostname.endsWith(".lineageos.org")))throw Error("Per sicurezza sono consentiti solo download HTTPS dai domini ufficiali LineageOS");
     const win=BrowserWindow.fromWebContents(event.sender);if(!win)throw Error("Finestra non disponibile");
     const dir=path.join(app.getPath("downloads"),"UMC");fs.mkdirSync(dir,{recursive:true});
-    const target=path.join(dir,safeFilename(filename));const list=pendingDownloads.get(parsed.toString())||[];
-    list.push({target,win});pendingDownloads.set(parsed.toString(),list);
+    const target=path.join(dir,safeFilename(filename));const list=pendingDownloads.get(win.webContents.id)||[];
+    list.push({target,win});pendingDownloads.set(win.webContents.id,list);
     win.webContents.downloadURL(parsed.toString());
     return{started:true,filename:path.basename(target)};
   });
