@@ -47,15 +47,15 @@ async function checkProvider(p,d){
   const anchors=[...doc.querySelectorAll("a[href]")].map(a=>({url:new URL(a.getAttribute("href"),p.url).href,label:(a.textContent||"").trim()}));
   const exactFiles=anchors.filter(a=>officialHost(a.url,p.host)&&exactToken(a.url+" "+a.label,d.codename)&&/\.(zip|img|bin|tar|xz|apk)$/i.test(new URL(a.url).pathname));
   const guideLinks=anchors.filter(a=>officialHost(a.url,p.host)&&exactToken(a.url+" "+a.label,d.codename));
-  if(!codeMatch)return{p,status:"not-listed",message:"Codename non trovato nel catalogo consultato.",files:[],links:[]};
-  if(!modelMatch)return{p,status:"codename-only",message:"Codename trovato, ma il nome modello non coincide in modo verificabile. Nessun file proposto.",files:[],links:guideLinks.slice(0,3)};
-  return{p,status:"verified",message:"Modello e codename trovati nella fonte ufficiale. Verifica la guida del progetto prima di procedere.",files:exactFiles,links:guideLinks.slice(0,3)};
+  if(!codeMatch)return{p,status:"not-listed",message:"Codename non trovato nel catalogo consultato. Nessun file proposto.",files:[],links:[]};
+  if(!modelMatch)return{p,status:"codename-only",message:"Codename trovato, ma il modello esatto non è confermato. Nessun file proposto.",files:[],links:guideLinks.slice(0,3)};
+  return{p,status:"candidate",message:"Modello e codename compaiono nella pagina generale, ma non è una conferma di compatibilità per variante/build. Apri la scheda ufficiale e verifica il modello completo. Download automatico disattivato per sicurezza.",files:[],links:guideLinks.slice(0,3)};
  }catch(e){return{p,status:"unavailable",message:"Verifica automatica non disponibile ("+(e.name==="AbortError"?"timeout":e.message)+"). Apri la fonte ufficiale e verifica manualmente.",files:[],links:[]}}
  finally{clearTimeout(timer)}
 }
 function renderResult(x){
- const labels={verified:"Corrispondenza trovata", "codename-only":"Verifica parziale", "not-listed":"Non trovato", unavailable:"Fonte non verificabile"};
- const cls=x.status==="verified"?"good":x.status==="codename-only"?"warn":"muted";
+ const labels={verified:"Compatibilità verificata", candidate:"Possibile corrispondenza · da verificare", "codename-only":"Verifica parziale", "not-listed":"Non trovato", unavailable:"Fonte non verificabile"};
+ const cls=x.status==="verified"?"good":(x.status==="candidate"||x.status==="codename-only")?"warn":"muted";
  let links='<a href="'+esc(x.p.url)+'" target="_blank" rel="noopener">Apri catalogo ufficiale ↗</a>';
  if(x.links.length)links+=' '+x.links.map(a=>'<a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.label||"Guida dispositivo")+' ↗</a>').join(" ");
  if(x.files.length)links+=' '+x.files.map(a=>'<a href="'+esc(a.url)+'" target="_blank" rel="noopener">File ufficiale: '+esc(a.label||a.url.split("/").pop())+' ↓</a>').join(" ");
@@ -69,8 +69,8 @@ async function verifyAll(){
  status.textContent="Identità ADB: "+d.manufacturer+" "+d.model+" · "+d.codename+". Controllo le fonti ufficiali…";
  const results=await Promise.all(providers.map(p=>checkProvider(p,d)));
  out.innerHTML=results.map(renderResult).join("");
- const good=results.filter(x=>x.status==="verified").length;
- status.textContent="Controllo terminato: "+good+" progetti con corrispondenza modello + codename; "+results.filter(x=>x.status==="codename-only").length+" corrispondenze parziali. Nessun file da mirror terzi viene proposto.";
+ const good=results.filter(x=>x.status==="verified").length;const candidates=results.filter(x=>x.status==="candidate").length;
+ status.textContent="Controllo terminato: "+good+" compatibilità certificate; "+candidates+" possibili corrispondenze da verificare manualmente; "+results.filter(x=>x.status==="codename-only").length+" corrispondenze parziali. Per gli otto cataloghi aggiuntivi UMC non offre download automatici finché non dispone di un indice device-specific affidabile."
 }
 async function loadKSign(){
  const card=document.querySelector('#iosTools article');
