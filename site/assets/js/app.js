@@ -33,3 +33,38 @@ $("#findRoms").onclick=findRoms;
 render();showQueue();
 if(window.UMC?.onDownloadProgress)window.UMC.onDownloadProgress(d=>{let pct=d.total?Math.round(d.received/d.total*100):0;$("#romStatus").textContent="Download "+d.filename+": "+(d.total?pct+"%":bytes(d.received))+" · "+bytes(d.received)+(d.total?" / "+bytes(d.total):"")});
 if(window.UMC?.onDownloadDone)window.UMC.onDownloadDone(d=>{$("#romStatus").textContent=d.state==="completed"?"Download completato: "+d.filename+" · Download/UMC":"Download terminato: "+d.state});
+
+const romProjects=[
+{name:"LineageOS",desc:"ROM Android open source con supporto per numerosi dispositivi.",url:"https://wiki.lineageos.org/devices/",source:"Catalogo dispositivi ufficiale"},
+{name:"crDroid",desc:"Esperienza AOSP con molte opzioni di personalizzazione.",url:"https://crdroid.net/",source:"Sito ufficiale"},
+{name:"GrapheneOS",desc:"Sistema focalizzato sulla sicurezza; supporto ufficiale per Google Pixel compatibili.",url:"https://grapheneos.org/releases",source:"Release ufficiali"},
+{name:"CalyxOS",desc:"Sistema Android orientato a privacy e sicurezza. Verifica stato e modelli supportati.",url:"https://calyxos.org/install/",source:"Installazione ufficiale"},
+{name:"/e/OS",desc:"Sistema de-Googled con servizi e store alternativi.",url:"https://doc.e.foundation/devices",source:"Dispositivi ufficiali"},
+{name:"Evolution X",desc:"ROM AOSP con funzioni e personalizzazioni aggiuntive.",url:"https://evolution-x.org/",source:"Sito ufficiale"},
+{name:"PixelOS",desc:"Esperienza ispirata a Pixel per i dispositivi presenti nel catalogo.",url:"https://pixelos.net/download",source:"Download ufficiali"},
+{name:"DerpFest",desc:"ROM AOSP community con personalizzazioni; controlla manutentore e build.",url:"https://derpfest.org/",source:"Sito ufficiale"},
+{name:"BlissROMs",desc:"Progetto Android aftermarket per dispositivi e piattaforme selezionate.",url:"https://blissroms.org/",source:"Sito ufficiale"}];
+function renderRomCatalog(){const el=$("#romCatalog");if(!el)return;el.innerHTML=romProjects.map(x=>'<article class="card"><span class="tag">PROGETTO ROM</span><h3>'+esc(x.name)+'</h3><p>'+esc(x.desc)+'</p><div class="meta">'+esc(x.source)+'</div><div class="actions"><a href="'+x.url+'" target="_blank" rel="noopener">Fonte ufficiale ↗</a></div></article>').join("")}
+const iosTools=[
+{name:"AltStore PAL",desc:"Marketplace alternativo ufficiale disponibile nell'Unione Europea; non richiede jailbreak.",url:"https://altstore.io/",tag:"EU · PAL"},
+{name:"AltStore Classic",desc:"Sideload di file IPA tramite AltServer; con account gratuito le app vanno rinnovate periodicamente.",url:"https://altstore.io/",tag:"PC / Mac"},
+{name:"SideStore",desc:"Sideloading open source con refresh sul dispositivo; richiede configurazione iniziale da computer.",url:"https://docs.sidestore.io/it/docs/installation/install",tag:"Open source"},
+{name:"KSign",desc:"Firma e installa IPA sul dispositivo. Scarica esclusivamente dalle release del repository ufficiale: certificati possono essere revocati.",url:"https://github.com/Nyasami/Ksign/releases",tag:"IPA signer"},
+{name:"Sideloadly",desc:"Strumento desktop per installare e firmare IPA su iPhone.",url:"https://sideloadly.io/",tag:"Windows / macOS"},
+{name:"Dopamine",desc:"Jailbreak semi-untethered. La compatibilità dipende da chip e versione iOS; non è universale.",url:"https://github.com/opa334/Dopamine",tag:"Jailbreak"},
+{name:"iOS Guide",desc:"Guida passo-passo per scegliere il metodo corretto in base a modello e firmware.",url:"https://ios.cfw.guide/",tag:"Guida compatibilità"}
+];
+function renderIosTools(){const el=$("#iosTools");if(!el)return;el.innerHTML=iosTools.map(x=>'<article class="card"><span class="tag">'+esc(x.tag)+'</span><h3>'+esc(x.name)+'</h3><p>'+esc(x.desc)+'</p><div class="actions"><a href="'+x.url+'" target="_blank" rel="noopener">Sito / download ↗</a></div></article>').join("")}
+function versionParts(s){if(!/^\d+(\.\d+){0,2}$/.test(s.trim()))return null;return s.trim().split(".").map(Number)}
+function cmpVersion(a,b){for(let i=0;i<Math.max(a.length,b.length);i++){let x=a[i]||0,y=b[i]||0;if(x!==y)return x-y}return 0}
+function checkJailbreak(){const model=$("#iphoneModel").value,v=versionParts($("#iosVersion").value),out=$("#jailbreakResult");if(!v){out.textContent="Inserisci una versione valida, ad esempio 17.3.1.";return}const low=x=>cmpVersion(v,versionParts(x))>=0,high=x=>cmpVersion(v,versionParts(x))<=0;let msg="",tool="",ok=false;
+if(model==="12"&&low("14.1")&&high("14.8.1")){ok=true;tool="Taurine";msg="Compatibilità indicata dalla iOS Guide per iPhone 12 su iOS 14.1–14.8.1."}
+else if(["12","13","14","14pro","15","15pro"].includes(model)&&low("15.0")&&high("17.3.1")){ok=true;tool="Dopamine";msg="Versione nel range supportato da Dopamine per i dispositivi A14–A17 Pro."}
+else if(["12","13","14","14pro","15","15pro"].includes(model)&&low("17.3.2")){msg="Nessun jailbreak pubblico confermato per questo modello/versione nella matrice consultata. Per iPhone A14–A17 Pro, Dopamine arriva a iOS 17.3.1."}
+else if(["16","16pro","17","17pro"].includes(model)){msg="Nessun jailbreak pubblico confermato per iPhone con chip A18/A19 nella matrice consultata. Il sideloading resta possibile senza jailbreak."}
+else if(model==="12"&&low("14.0")&&high("14.0")){msg="Versione fuori dalla finestra documentata per iPhone 12 in questa verifica: consulta la guida specifica."}
+else{msg="Non risulta una compatibilità jailbreak confermata per questa combinazione. Non aggiornare/downgradare basandoti su supposizioni."}
+out.innerHTML=(ok?'<strong class="good">Possibile compatibilità: '+esc(tool)+'</strong>':'<strong class="warn">Nessuna compatibilità confermata</strong>')+'<p>'+esc(msg)+'</p><p>Apri la <a href="https://ios.cfw.guide/get-started/iPhone-'+(model==="14pro"?"14-Pro":model==="15pro"?"15-Pro":model==="16pro"?"16-Pro":model==="17pro"?"17-Pro":model)+'.html" target="_blank" rel="noopener">guida firmware specifica ↗</a> e confronta la build esatta prima di procedere. Compatibilità preliminare, non garanzia di successo.</p><p>Nota: Dopamine è semi-untethered; dopo un riavvio potrebbe essere necessario riattivarlo. Il sideloading e il jailbreak sono procedure diverse.</p>'}
+$("#checkJailbreak")?.addEventListener("click",checkJailbreak);
+$("#iosVersion")?.addEventListener("keydown",e=>{if(e.key==="Enter")checkJailbreak()});
+renderRomCatalog();renderIosTools();
