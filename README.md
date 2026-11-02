@@ -2,9 +2,7 @@
 
 Catalogo open source di strumenti, firmware, recovery, driver e guide per dispositivi Android. Progetto indipendente e non affiliato ai produttori.
 
-## MVP v0.2.0 (in sviluppo — PR #2)
-
-La verifica automatica della sintassi è eseguita da GitHub Actions prima dell'integrazione in `main`.
+## MVP v0.2.0
 - Interfaccia web responsive dark.
 - Catalogo iniziale di fonti ufficiali e community.
 - Ricerca e filtri per categoria e brand.
