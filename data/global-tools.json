@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "updated": "2026-11-02",
+  "resources": [
+    {
+      "id": "platform-tools",
+      "name": "Android SDK Platform Tools",
+      "brand": "Universale",
+      "category": "tool",
+      "type": "ADB / Fastboot",
+      "description": "Pacchetto ufficiale Google con ADB e Fastboot.",
+      "url": "https://developer.android.com/tools/releases/platform-tools",
+      "source": "Google Developers"
+    },
+    {
+      "id": "pixel-factory",
+      "name": "Pixel Factory Images",
+      "brand": "Google",
+      "category": "firmware",
+      "type": "Factory images",
+      "description": "Immagini factory ufficiali per Google Pixel.",
+      "url": "https://developers.google.com/android/images",
+      "source": "Google Developers"
+    },
+    {
+      "id": "pixel-ota",
+      "name": "Pixel OTA Images",
+      "brand": "Google",
+      "category": "firmware",
+      "type": "OTA",
+      "description": "Pacchetti OTA ufficiali per dispositivi Pixel.",
+      "url": "https://developers.google.com/android/ota",
+      "source": "Google Developers"
+    },
+    {
+      "id": "samsung-driver",
+      "name": "Samsung USB Driver",
+      "brand": "Samsung",
+      "category": "tool",
+      "type": "Driver USB",
+      "description": "Driver USB Samsung per Windows.",
+      "url": "https://developer.samsung.com/android-usb-driver",
+      "source": "Samsung Developers"
+    },
+    {
+      "id": "odin-guide",
+      "name": "Odin — guida",
+      "brand": "Samsung",
+      "category": "guide",
+      "type": "Flash manuale",
+      "description": "Informazioni e precauzioni per il flash Samsung. Odin non è distribuito da UMC.",
+      "url": "https://www.sammobile.com/samsung/odin/",
+      "source": "SamMobile"
+    },
+    {
+      "id": "lineage",
+      "name": "LineageOS Devices",
+      "brand": "Universale",
+      "category": "firmware",
+      "type": "Custom ROM",
+      "description": "Elenco ufficiale dei dispositivi supportati da LineageOS.",
+      "url": "https://wiki.lineageos.org/devices/",
+      "source": "LineageOS"
+    },
+    {
+      "id": "twrp",
+      "name": "TWRP Devices",
+      "brand": "Universale",
+      "category": "recovery",
+      "type": "Recovery",
+      "description": "Elenco ufficiale dei dispositivi supportati da TWRP.",
+      "url": "https://twrp.me/Devices/",
+      "source": "Team Win"
+    },
+    {
+      "id": "magisk",
+      "name": "Magisk",
+      "brand": "Universale",
+      "category": "root",
+      "type": "Root",
+      "description": "Repository ufficiale del progetto Magisk.",
+      "url": "https://github.com/topjohnwu/Magisk",
+      "source": "topjohnwu"
+    },
+    {
+      "id": "xiaomi-unlock",
+      "name": "Xiaomi Bootloader Unlock",
+      "brand": "Xiaomi",
+      "category": "tool",
+      "type": "Bootloader",
+      "description": "Portale ufficiale Xiaomi per lo sblocco bootloader.",
+      "url": "https://www.mi.com/global/unlock/",
+      "source": "Xiaomi"
+    },
+    {
+      "id": "motorola-rsa",
+      "name": "Motorola Rescue Assistant",
+      "brand": "Motorola",
+      "category": "tool",
+      "type": "Ripristino",
+      "description": "Strumento ufficiale Motorola per ripristino e aggiornamento.",
+      "url": "https://en-us.support.motorola.com/app/rsa",
+      "source": "Motorola"
+    },
+    {
+      "id": "oneplus",
+      "name": "OnePlus Software Upgrade",
+      "brand": "OnePlus",
+      "category": "firmware",
+      "type": "Firmware",
+      "description": "Portale supporto e aggiornamenti OnePlus.",
+      "url": "https://www.oneplus.com/support/softwareupgrade",
+      "source": "OnePlus"
+    }
+  ]
+}

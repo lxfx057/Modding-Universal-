@@ -1,0 +1,1 @@
+const {contextBridge,ipcRenderer}=require("electron");contextBridge.exposeInMainWorld("UMC",Object.freeze({detect:()=>ipcRenderer.invoke("umc:detect"),openUrl:url=>ipcRenderer.invoke("umc:open-url",url)}));
