@@ -5,3 +5,75 @@
 /* iPhone lab and ROM catalog */
 .good{color:#a3ff6f}.warn{color:#ffb36b}.panel a{color:var(--cyan)}#iphoneModel{flex:1;min-width:190px}#iosVersion{max-width:180px}#jailbreakResult{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:8px;background:#0c1421}#jailbreakResult p{max-width:850px}.community{margin-top:38px}
 @media(max-width:700px){#iosVersion{max-width:none;flex:1}#iphoneModel{width:100%}}
+
+/* UMC 0.5 — readability and responsive workspace refresh */
+:root{--bg:#080c14;--panel:#101a29;--line:#26364d;--muted:#a9b7ca;--txt:#f2f6ff;--lime:#b6ff78;--cyan:#7be5f0}
+html{scroll-behavior:smooth}
+body{font-size:14px;line-height:1.55}
+main{width:min(100% - 235px,1540px);padding:0 clamp(22px,4vw,64px) 36px}
+header{font-size:13px;height:76px}
+.hero{min-height:300px;padding:58px 0 48px}
+.hero>small,.heading small,section small{font-size:11px;letter-spacing:2.2px}
+.hero h1{font-size:clamp(42px,5.4vw,68px);line-height:1.02}
+.hero p,.heading p,.panel p{font-size:14px;line-height:1.75}
+.hero-actions{display:flex;gap:12px;margin-top:24px;align-items:center}
+.hero-actions .primary,.hero-actions .secondary{font-size:13px;padding:13px 18px;border-radius:9px}
+.heading{margin:42px 0 22px}
+.heading h2{font-size:clamp(24px,2.2vw,30px)}
+.filters{gap:12px;margin:22px 0}
+.filters input,.filters select{font-size:14px;padding:14px 15px;min-height:48px;border-radius:9px}
+.grid{grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:18px}
+.card,.panel{border-radius:14px;padding:22px}
+.card{min-height:235px;display:flex;flex-direction:column;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.card:hover{transform:translateY(-3px);border-color:#55718e;background:#142238}
+.card h3{font-size:17px;line-height:1.35;margin:15px 0 9px}
+.card p{font-size:13px;line-height:1.7;min-height:58px}
+.card .meta{font-size:11px;margin-top:auto;padding:12px 0}
+.card .actions{gap:10px;flex-wrap:wrap;margin-top:4px}
+.actions a,.ghlink{font-size:12px}
+.select,.secondary{font-size:12px;padding:10px 13px;border-radius:8px}
+.primary{font-size:13px;padding:13px 17px;border-radius:8px}
+.tag{font-size:10px;letter-spacing:.7px}
+.nav{font-size:13px;padding:14px 13px;border-radius:9px}
+.label{font-size:11px}
+.panel{padding:26px}
+.panel h3{font-size:18px}
+.muted,.device-chip,.device-summary{font-size:13px}
+.rom-card{padding:22px;border-radius:12px}
+.rom-card h3{font-size:16px}
+.rom-card p{font-size:13px}
+#jailbreakResult{font-size:14px}
+.queue-row,.ghcard{font-size:14px;padding:17px}
+.queue-row button{font-size:13px}
+footer{font-size:11px}
+.orb{width:140px;height:140px;font-size:32px}
+@media(max-width:1000px){main{width:calc(100% - 210px);margin-left:210px;padding:0 24px 30px}.sidebar{width:210px}.grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+@media(max-width:700px){
+ .sidebar{position:sticky;top:0;z-index:20;width:100%;padding:12px 12px 10px;background:rgba(8,12,20,.96);backdrop-filter:blur(16px);border-right:0;border-bottom:1px solid var(--line)}
+ .brand{font-size:14px;display:inline-flex;align-items:center;margin:0 0 9px}
+ .brand br{display:none}.brand small{margin-left:7px}
+ .nav{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;margin:2px 2px 0 0;font-size:11px;white-space:nowrap}
+ main{width:100%;margin:0;padding:0 16px 28px}
+ header{height:56px;font-size:11px}
+ .hero{min-height:0;padding:34px 0 30px}
+ .hero h1{font-size:clamp(39px,11vw,54px);letter-spacing:-2px}
+ .hero p{font-size:14px;max-width:94%}
+ .hero-actions{flex-wrap:wrap}
+ .hero-actions button{flex:1;min-width:145px}
+ .orb{display:none}
+ .heading{margin:30px 0 16px;align-items:flex-start}
+ .heading h2{font-size:23px}
+ .filters{flex-direction:column}
+ .filters input,.filters select,.filters button{width:100%;min-width:0;max-width:none}
+ .grid{grid-template-columns:1fr;gap:13px}
+ .card{min-height:0;padding:20px}
+ .card p{min-height:0}
+ .card h3{font-size:17px}
+ .panel{padding:19px}
+ .rom-card{display:block;padding:18px}
+ .rom-card .actions{margin-top:15px;justify-content:flex-start;flex-wrap:wrap}
+ .device-manual{display:flex;flex-direction:column}
+ .queueactions{align-items:stretch}
+ .queueactions button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
